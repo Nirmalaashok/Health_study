@@ -6,7 +6,7 @@ def calculate_statistics(df):
         "systolic_bp",
         "cholesterol"
     ]
-
-    statistics = df[columns].describe()
-
+    statistics = df[columns].agg(
+        ["mean", "median", "min", "max"]
+    )
     return statistics
