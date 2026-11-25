@@ -4,18 +4,19 @@ import matplotlib.pyplot as plt
 
 
 class HealthAnalyzer:
+    """
+    Analyse health data using  linear regression and graphs.
+    """
     
     def __init__(self, df):
         self.df = df
 
     def average_blood_pressure(self):
-        """
-        Calculate the average systolic blood pressure.
-        """
+        """Calculate the average systolic blood pressure."""
         return self.df["systolic_bp"].mean()
 
     def blood_pressure_regression(self):
-        " Calculate linear regression "
+        """ Calculate linear regression between age and systolic blood pressure. """
         data = self.df[["age", "systolic_bp"]].dropna()
 
         x = data["age"].to_numpy()
@@ -26,6 +27,8 @@ class HealthAnalyzer:
         return slope, intercept
 
     def calculate_r_squared(self):
+        """ Calculate R-squared to measure how well the linear
+        regression model fits the data. return value is float  r-squared"""
         
         data = self.df[["age", "systolic_bp"]].dropna()
     
@@ -47,40 +50,28 @@ class HealthAnalyzer:
         return r_squared
     
     def plot_blood_pressure_by_age(self):
-        "  Visualise age and systolic blood pressure  with a regression line. "
+        """ Visualise the relationship between age and systolic
+            blood pressure with a regression line."""
+       
         data = self.df[["age", "systolic_bp"]].dropna()
-    
+
         x = data["age"].to_numpy()
         y = data["systolic_bp"].to_numpy()
-    
-        slope, intercept = np.polyfit(x, y, 1)
-    
-# Sort age values for a correct regression line
+
+        slope, intercept = self.blood_pressure_regression()
+
+        # Sort age values for a correct regression line
         sorted_indices = np.argsort(x)
         x_sorted = x[sorted_indices]
-    
+
         y_pred = slope * x_sorted + intercept
-    
+
         plt.figure(figsize=(8, 5))
-    
-        plt.scatter(
-            x,
-            y,
-            alpha=0.5,
-            label="Actual data"
-        )
-    
-        plt.plot(
-                x_sorted,
-                y_pred,
-                color="red",
-                label="Regression line"
-            )
-    
+        plt.scatter(x, y, alpha=0.5, label="Actual data")
+        plt.plot(x_sorted, y_pred, color="red", label="Regression line")
+
         plt.xlabel("Age")
         plt.ylabel("Systolic Blood Pressure")
         plt.title("Age vs Systolic Blood Pressure")
         plt.legend()
         plt.show()
-    
-

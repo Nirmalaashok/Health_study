@@ -1,4 +1,5 @@
 def calculate_statistics(df):
+    """Calculate mean, median, minimum and maximum  values for selected health columns."""
     columns = [
         "age",
         "weight",
